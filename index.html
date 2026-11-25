@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOFAMiN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, Arial, sans-serif;
+  background: #050505;
+  color: #eaeaea;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.2px;
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.page {
+  display: none;
+  min-height: 100vh;
+}
+
+.page.active {
+  display: block;
+}
+
+/* =========================
+   ROUND CORNERS
+========================= */
+
+.track {
+  border-radius: 14px;
+}
+
+button {
+  border-radius: 8px;
+}
+
+.progress {
+  border-radius: 20px;
+}
+
+header img {
+  border-radius: 12px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+#particles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: radial-gradient(circle at center, rgba(179,0,255,0.08), transparent 60%);
+}
+
+.smoke {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(179,0,255,0.15), transparent 60%);
+  filter: blur(90px);
+  animation: smoke 12s infinite alternate;
+  z-index: 1;
+}
+
+@keyframes smoke {
+  from { transform: scale(1); }
+  to   { transform: scale(1.3) translateY(-40px); }
+}
+
+/* =========================
+   ── HOME PAGE ──
+========================= */
+
+header {
+  text-align: center;
+  padding: 60px 20px;
+  background: radial-gradient(circle, #1a1a1a, #000);
+  border-bottom: 2px solid #b300ff;
+  position: relative;
+  z-index: 2;
+}
+
+.glitch {
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  color: #b300ff;
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 0 30px #b300ff;
+  animation: floatTitle 6s ease-in-out infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.glitch::before {
+  color: #ff00ff;
+  transform: translate(2px);
+}
+
+.glitch::after {
+  color: #00ffff;
+  transform: translate(-2px);
+}
+
+@keyframes floatTitle {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+h2 {
+  font-size: 18px;
+  letter-spacing: 0.4em;
+  font-weight: 400;
+  color: #b300ff;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+/* CLICKABLE PHOTO */
+
+.photo-link {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  margin-top: 20px;
+}
+
+.photo-link img {
+  width: 260px;
+  border: 2px solid #b300ff;
+  box-shadow: 0 0 25px #b300ff;
+  border-radius: 12px;
+  display: block;
+  transition: 0.3s ease;
+}
+
+.photo-link:hover img {
+  box-shadow: 0 0 50px #b300ff, 0 0 100px rgba(179,0,255,0.4);
+  transform: scale(1.03);
+}
+
+.photo-link {
+  margin-bottom: 44px;
+}
+
+.photo-hint {
+  position: absolute;
+  bottom: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+.photo-hint span:not(.hint-arrow) {
+  color: #b300ff;
+  text-shadow: 0 0 10px rgba(179,0,255,0.6);
+}
+
+.photo-hint .hint-arrow {
+  font-size: 36px;
+  animation: arrowBounce 1.3s ease-in-out infinite;
+  display: block;
+  line-height: 1;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+section {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* HOME TRACKS */
+
+.track {
+  background: rgba(20,20,20,0.75);
+  padding: 18px;
+  margin-bottom: 18px;
+  border-left: 3px solid #b300ff;
+  backdrop-filter: blur(8px);
+  transition: 0.2s ease;
+}
+
+.track.active {
+  border-left: 3px solid #ff00ff;
+  box-shadow: 0 0 25px rgba(179,0,255,0.35), 0 0 60px rgba(255,0,255,0.15);
+  transform: scale(1.01);
+}
+
+.artist {
+  font-size: 16px;
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  color: #b300ff;
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 0 30px #b300ff;
+}
+
+.artist::before,
+.artist::after {
+  content: "DOFAMiN";
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.artist::before { color: #ff00ff; transform: translate(2px); }
+.artist::after  { color: #00ffff; transform: translate(-2px); }
+
+.title {
+  color: #ffffff;
+  opacity: 0.9;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.player button {
+  background: transparent;
+  border: 1px solid #b300ff;
+  color: #b300ff;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+}
+
+.player button:hover {
+  background: #b300ff;
+  color: #000;
+}
+
+.progress {
+  flex: 1;
+  height: 12px;
+  background: #1a1a1a;
+  cursor: pointer;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, #b300ff, #ff00ff);
+  width: 0%;
+}
+
+.volume {
+  width: 80px;
+}
+
+.home-time {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  opacity: 0.5;
+  font-size: 13px;
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   ── GALLERY PAGE ──
+========================= */
+
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  background: transparent;
+  border: 1px solid #b300ff;
+  color: #b300ff;
+  padding: 8px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s;
+  display: none;
+}
+
+.back-btn.visible {
+  display: inline-block;
+}
+
+.back-btn:hover {
+  background: #b300ff;
+  color: #000;
+}
+
+.gallery-header {
+  text-align: center;
+  padding: 80px 20px 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-header h1 {
+  font-size: clamp(28px, 4vw, 52px);
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  color: #b300ff;
+  text-shadow: 0 0 30px #b300ff;
+  margin: 0 0 8px;
+  animation: floatTitle 6s ease-in-out infinite;
+}
+
+.gallery-header p {
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  opacity: 0.5;
+  margin: 0;
+}
+
+.gallery-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  background: rgba(20,20,20,0.75);
+  border: 1px solid rgba(179,0,255,0.25);
+  border-radius: 14px;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: #b300ff;
+  box-shadow: 0 0 30px rgba(179,0,255,0.3), 0 0 60px rgba(255,0,255,0.1);
+}
+
+.card-cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: #111;
+  cursor: zoom-in;
+}
+
+.card-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #0e0e0e 0%, #1a0030 50%, #0e0e0e 100%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.card-cover-placeholder::before {
+  content: "";
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  border: 1px solid rgba(179,0,255,0.2);
+  animation: pulseRing 3s ease-in-out infinite;
+}
+
+.card-cover-placeholder::after {
+  content: "";
+  position: absolute;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 1px solid rgba(179,0,255,0.4);
+  animation: pulseRing 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.8); opacity: 0.6; }
+  50%  { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(0.8); opacity: 0.6; }
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  opacity: 0.3;
+  color: #b300ff;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 12px #b300ff);
+}
+
+.card-body {
+  padding: 14px 16px 16px;
+}
+
+.card-artist {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #b300ff;
+  text-shadow: 0 0 12px rgba(179,0,255,0.5);
+  margin: 0 0 4px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid #b300ff;
+  background: transparent;
+  color: #b300ff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: 0.2s;
+  padding: 0;
+  line-height: 1;
+  font-family: "Inter", sans-serif;
+}
+
+.play-btn:hover {
+  background: #b300ff;
+  color: #000;
+}
+
+.play-btn.playing {
+  background: #b300ff;
+  color: #000;
+  box-shadow: 0 0 16px rgba(179,0,255,0.6);
+  animation: btnPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(179,0,255,0.6); }
+  50%       { box-shadow: 0 0 28px rgba(179,0,255,1); }
+}
+
+.progress-wrap {
+  flex: 1;
+  height: 4px;
+  background: rgba(179,0,255,0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #b300ff, #ff00ff);
+  width: 0%;
+  border-radius: 20px;
+  transition: width 0.1s linear;
+}
+
+.time-display {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(179,0,255,0.1);
+}
+
+.vol-icon {
+  font-size: 13px;
+  opacity: 0.4;
+}
+
+.vol-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  background: rgba(179,0,255,0.2);
+  border-radius: 20px;
+  outline: none;
+  cursor: pointer;
+}
+
+.vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #b300ff;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(179,0,255,0.6);
+}
+
+.card.active {
+  border-color: #ff00ff;
+  box-shadow: 0 0 30px rgba(179,0,255,0.45), 0 0 70px rgba(255,0,255,0.15);
+}
+
+/* LIGHTBOX */
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.92);
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border: 2px solid #b300ff;
+  border-radius: 14px;
+  box-shadow: 0 0 60px rgba(179,0,255,0.5);
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 20px; right: 20px;
+  background: transparent;
+  border: 1px solid #b300ff;
+  color: #b300ff;
+  font-size: 20px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+
+.lightbox-close:hover {
+  background: #b300ff;
+  color: #000;
+}
+
+/* PAGE TRANSITION */
+
+.page {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+<div class="smoke"></div>
+
+<button class="back-btn" id="back-btn" onclick="showPage('home')">← BACK</button>
+
+<!-- ======================== HOME PAGE ======================== -->
+
+<div class="page active" id="page-home">
+
+<header>
+  <h1 class="glitch" data-text="DOFAMiN">DOFAMiN</h1>
+
+  <p>
+    Dark Rock Project
+    - The Hidden Mind
+  </p>
+
+  <div class="photo-link" onclick="showPage('gallery')">
+    <img src="./img/dofamind.png" alt="DOFAMiN">
+    <span class="photo-hint">
+      <span class="hint-arrow">↑</span>
+      <span>GALLERY</span>
+    </span>
+  </div>
+</header>
+
+<section>
+  <h2>Music</h2>
+  <div id="list"></div>
+</section>
+
+<footer>
+  © 2027 ALEX KiNG - All Rights Reserved
+  / Created & Developed by Alex King
+</footer>
+
+</div>
+
+<!-- ======================== GALLERY PAGE ======================== -->
+
+<div class="page" id="page-gallery">
+
+<div class="gallery-header">
+  <h1>GALLERY</h1>
+  <p>DOFAMiN — Visual & Sound</p>
+</div>
+
+<div class="gallery-grid" id="gallery"></div>
+
+<footer>
+  © 2027 ALEX KiNG — All Rights Reserved / Created & Developed by Alex King
+</footer>
+
+</div>
+
+<!-- LIGHTBOX -->
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">✕</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function stopAllAudio() {
+  // stop home tracks
+  document.querySelectorAll(".track").forEach(t => {
+    const a = t.querySelector("audio");
+    if (a) { a.pause(); a.currentTime = 0; }
+    const btn = t.querySelector("button");
+    if (btn) btn.innerText = "Play";
+    t.classList.remove("active");
+    const bar = t.querySelector(".bar");
+    if (bar) bar.style.width = "0%";
+    const ht = t.querySelector(".home-time");
+    if (ht) ht.textContent = "0:00";
+  });
+  current = null; currentIndex = -1;
+
+  // stop gallery cards
+  document.querySelectorAll(".card").forEach(c => {
+    const a = c.querySelector("audio");
+    if (a) { a.pause(); a.currentTime = 0; }
+    const btn = c.querySelector(".play-btn");
+    if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+    c.classList.remove("active");
+    const bar = c.querySelector(".progress-bar");
+    if (bar) bar.style.width = "0%";
+    const t = c.querySelector(".time-display");
+    if (t) t.textContent = "0:00";
+  });
+  activeAudio = null; activeCard = null;
+}
+
+function showPage(name, pushState = true) {
+  stopAllAudio();
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + name).classList.add("active");
+
+  if (pushState) {
+    history.pushState({ page: name }, "", "#" + name);
+  }
+
+  const backBtn = document.getElementById("back-btn");
+  if (name === "home") {
+    backBtn.classList.remove("visible");
+    window.scrollTo(0, 0);
+  } else {
+    backBtn.classList.add("visible");
+    window.scrollTo(0, 0);
+  }
+}
+
+/* =========================
+   HOME – TRACK LIST
+========================= */
+
+const tracks = [
+  "ANKOGNiTO - Traff",
+  "ANKOGNiTO - Wuppertal",
+
+];
+
+const list = document.getElementById("list");
+let current = null;
+let currentIndex = -1;
+
+tracks.forEach((name, index) => {
+  const title = name.replace("ANKOGNiTO - ", "");
+
+  list.innerHTML += `
+  <div class="track" data-index="${index}">
+    <div class="artist">DOFAMiN</div>
+    <div class="title">${title}</div>
+    <audio src="./music/${name}.mp3"></audio>
+    <div class="player">
+      <button onclick="toggle(this)">Play</button>
+      <div class="progress" onclick="seek(event,this)">
+        <div class="bar"></div>
+      </div>
+      <span class="home-time">0:00</span>
+      <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" oninput="setVolume(this)">
+    </div>
+  </div>`;
+});
+
+function toggle(btn) {
+  const track = btn.closest(".track");
+  const audio = track.querySelector("audio");
+  const index = Number(track.dataset.index);
+
+  document.querySelectorAll(".track").forEach(t => {
+    t.classList.remove("active");
+    t.querySelector("button").innerText = "Play";
+  });
+
+  if (current && current !== audio) {
+    current.pause();
+    current.currentTime = 0;
+  }
+
+  if (audio.paused) {
+    audio.play();
+    btn.innerText = "Pause";
+    track.classList.add("active");
+    current = audio;
+    currentIndex = index;
+    audio.onended = () => playNext();
+  } else {
+    audio.pause();
+    btn.innerText = "Play";
+    track.classList.remove("active");
+  }
+
+  audio.ontimeupdate = () => {
+    const bar = track.querySelector(".bar");
+    const timeEl = track.querySelector(".home-time");
+    if (!audio.duration) return;
+    bar.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+    const m = Math.floor(audio.currentTime / 60);
+    const s = Math.floor(audio.currentTime % 60);
+    timeEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+  };
+}
+
+function playNext() {
+  const next = currentIndex + 1;
+  const nextTrack = document.querySelector(`.track[data-index="${next}"]`);
+  if (!nextTrack) return;
+  toggle(nextTrack.querySelector("button"));
+}
+
+function seek(e, el) {
+  const audio = el.closest(".track").querySelector("audio");
+  const rect = el.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+}
+
+function setVolume(slider) {
+  const audio = slider.closest(".track").querySelector("audio");
+  audio.volume = slider.value;
+}
+
+/* =========================
+   GALLERY
+========================= */
+
+const galleryItems = [
+  { img: "./img/gallery/01.png", title: "Traff",            file: "ANKOGNiTO - Traff" },
+  { img: "./img/gallery/02.png", title: "Wuppertal",        file: "ANKOGNiTO - Wuppertal" },
+];
+
+const galleryEl = document.getElementById("gallery");
+let activeAudio = null;
+let activeCard  = null;
+
+function formatTime(s) {
+  if (!s || isNaN(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ":" + (sec < 10 ? "0" : "") + sec;
+}
+
+galleryItems.forEach((item, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.dataset.index = i;
+
+  card.innerHTML = `
+    <img class="card-cover" src="${item.img}" alt="${item.title}"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="card-cover-placeholder">
+      <span class="placeholder-icon">◈</span>
+    </div>
+    <audio src="./music/${item.file}.mp3" preload="none"></audio>
+    <div class="card-body">
+      <div class="card-artist">DOFAMiN</div>
+      <div class="card-title">${item.title}</div>
+      <div class="mini-player">
+        <button class="play-btn">▶</button>
+        <div class="progress-wrap">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="time-display">0:00</span>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">♪</span>
+        <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.8">
+      </div>
+    </div>
+  `;
+
+  const audio     = card.querySelector("audio");
+  const btn       = card.querySelector(".play-btn");
+  const bar       = card.querySelector(".progress-bar");
+  const timeEl    = card.querySelector(".time-display");
+  const progress  = card.querySelector(".progress-wrap");
+  const volSlider = card.querySelector(".vol-slider");
+  const cover     = card.querySelector(".card-cover");
+  const placeholder = card.querySelector(".card-cover-placeholder");
+
+  [cover, placeholder].forEach(el => {
+    el.addEventListener("click", () => {
+      const src = cover.style.display !== "none" ? cover.src : null;
+      if (src) openLightbox(src);
+    });
+  });
+
+  btn.addEventListener("click", () => {
+    if (activeAudio && activeAudio !== audio) {
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
+      activeCard.querySelector(".play-btn").textContent = "▶";
+      activeCard.querySelector(".play-btn").classList.remove("playing");
+      activeCard.querySelector(".progress-bar").style.width = "0%";
+      activeCard.querySelector(".time-display").textContent = "0:00";
+      activeCard.classList.remove("active");
+    }
+
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = "❚❚";
+      btn.classList.add("playing");
+      card.classList.add("active");
+      activeAudio = audio;
+      activeCard  = card;
+      audio.onended = () => {
+        btn.textContent = "▶";
+        btn.classList.remove("playing");
+        card.classList.remove("active");
+        bar.style.width = "0%";
+        timeEl.textContent = "0:00";
+        activeAudio = null;
+        activeCard  = null;
+        const next = galleryEl.querySelector(`.card[data-index="${i + 1}"]`);
+        if (next) next.querySelector(".play-btn").click();
+      };
+    } else {
+      audio.pause();
+      btn.textContent = "▶";
+      btn.classList.remove("playing");
+      card.classList.remove("active");
+    }
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+    bar.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+    timeEl.textContent = formatTime(audio.currentTime);
+  });
+
+  progress.addEventListener("click", e => {
+    if (!audio.duration) return;
+    const rect = progress.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+
+  volSlider.addEventListener("input", () => {
+    audio.volume = volSlider.value;
+  });
+
+  galleryEl.appendChild(card);
+});
+
+/* =========================
+   LIGHTBOX
+========================= */
+
+const lightbox    = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+
+function openLightbox(src) {
+  lightboxImg.src = src;
+  lightbox.classList.add("open");
+}
+
+document.getElementById("lightbox-close").addEventListener("click", () => {
+  lightbox.classList.remove("open");
+});
+
+lightbox.addEventListener("click", e => {
+  if (e.target === lightbox) lightbox.classList.remove("open");
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") lightbox.classList.remove("open");
+});
+
+/* =========================
+   PARTICLES
+========================= */
+
+const canvas = document.getElementById("particles");
+const ctx    = canvas.getContext("2d");
+let w, h;
+
+function resize() {
+  w = canvas.width  = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+const noteChars = ["♪", "♫", "♬", "♩"];
+
+const flakes = [];
+for (let i = 0; i < 90; i++) {
+  flakes.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    size: Math.random() * 10 + 10,
+    speed: Math.random() * 0.35 + 0.1,
+    drift: Math.random() * 0.4 - 0.2,
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() * 0.02 - 0.01),
+    char: noteChars[Math.floor(Math.random() * noteChars.length)],
+    alpha: Math.random() * 0.4 + 0.4
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+  for (let f of flakes) {
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    ctx.rotate(f.rotation);
+    ctx.font         = f.size + "px sans-serif";
+    ctx.textAlign    = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle    = `rgba(179,0,255,${f.alpha})`;
+    ctx.shadowBlur   = 8;
+    ctx.shadowColor  = "#b300ff";
+    ctx.fillText(f.char, 0, 0);
+    ctx.restore();
+
+    f.y += f.speed;
+    f.x += f.drift;
+    f.rotation += f.rotSpeed;
+    if (f.y > h + 20) { f.y = -20; f.x = Math.random() * w; }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+
+/* =========================
+   BROWSER BACK / FORWARD
+========================= */
+
+window.addEventListener("popstate", function(e) {
+  var page = (e.state && e.state.page) ? e.state.page : "home";
+  showPage(page, false);
+});
+
+// replace initial state so back button has somewhere to go
+history.replaceState({ page: "home" }, "", "#home");
+
+</script>
+</body>
+</html>
